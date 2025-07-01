@@ -1,0 +1,143 @@
+{
+  "name": "backend",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/backend/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/backend",
+        "format": [
+          "cjs"
+        ],
+        "bundle": false,
+        "main": "apps/backend/src/main.ts",
+        "tsConfig": "apps/backend/tsconfig.app.json",
+        "assets": [
+          "apps/backend/src/assets"
+        ],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": [
+        "build"
+      ],
+      "options": {
+        "buildTarget": "backend:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "backend:build:development"
+        },
+        "production": {
+          "buildTarget": "backend:build:production"
+        }
+      }
+    },
+    "container": {
+      "executor": "@nx-tools/nx-container:build",
+      "dependsOn": [
+        "build"
+      ],
+      "defaultConfiguration": "local",
+      "options": {
+        "engine": "kaniko",
+        "context": "dist/apps/backend",
+        "file": "apps/backend/Dockerfile"
+      },
+      "configurations": {
+        "local": {
+          "metadata": {
+            "images": [
+              "backend"
+            ],
+            "tags": [
+              "type=sha"
+            ]
+          },
+          "push": false
+        },
+        "staging": {
+          "metadata": {
+            "images": [
+              "cr.yandex/crp15uhhf8trv7iip8sr/backend"
+            ],
+            "tags": [
+              "type=sha"
+            ]
+          },
+          "push": true,
+          "load": false
+        },
+        "production": {
+          "metadata": {
+            "images": [
+              "cr.yandex/crp15uhhf8trv7iip8sr/backend"
+            ],
+            "tags": [
+              "type=raw,value=$VERSION",
+              "latest"
+            ]
+          },
+          "push": true,
+          "load": false
+        }
+      }
+    },
+    "test": {
+      "options": {
+        "passWithNoTests": true
+      }
+    },
+    "migration-create": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "sh src/scripts/db-migration-create.sh",
+        "cwd": "apps/backend"
+      }
+    },
+    "migration-up": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "sh src/scripts/db-migration-up.sh",
+        "cwd": "apps/backend"
+      }
+    },
+    "seed-up": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "sh src/scripts/db-seed-up.sh",
+        "cwd": "apps/backend"
+      }
+    }
+  }
+}

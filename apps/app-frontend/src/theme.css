@@ -1,0 +1,27 @@
+@theme {
+    /* Base colors */
+    --color-background: #090C12;
+    --color-surface: #11151E;
+    --color-surface-light: #1F2430;
+    --color-surface-hover: #0E1119;
+  
+    /* Accent */
+    --color-accent: #1DB954;
+    --color-accent-hover: #1ED760;
+    --color-accent-active: #1AA34A;
+    --color-focus: #1DB954;
+  
+    /* Text */
+    --color-text-primary: #FFFFFF;
+    --color-text-secondary: #A1A1AA;
+    --color-text-placeholder: #6B7280;
+  
+    /* Borders */
+    --color-border: #2A2E38;
+  
+    /* Feedback */
+    --color-success: #28A745;
+    --color-error:   #E74C3C;
+    --color-warning: #F39C12;
+  }
+  

@@ -1,0 +1,13 @@
+.nx/installation
+.nx/cache
+.nx/workspace-data
+.next
+out
+node_modules
+dist
+tmp
+.env
+.DS_Store
+.vscode
+vite.config.*.timestamp*
+vitest.config.*.timestamp*

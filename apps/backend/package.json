@@ -1,0 +1,7 @@
+{
+  "name": "backend",
+  "version": "0.0.0",
+  "scripts": {
+    "mikro-orm": "cross-env MIKRO_ORM_ALLOW_GLOBAL_CLI=true MIKRO_ORM_CLI_CONFIG=./src/model/mikro-orm.config.ts mikro-orm"
+  }
+}
